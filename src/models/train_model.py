@@ -105,6 +105,7 @@ def train(lr):
 
 cli.add_command(train)
 
+import pandas as pd
 
 if __name__ == "__main__":
     print('i enter train_model')
