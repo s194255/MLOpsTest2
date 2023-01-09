@@ -9,7 +9,6 @@ from src.data.data_traditional import MNIST
 from tests import _PATH_DATA
 
 
-
 def get_random_shape(dataset):
     img, label = random.choice(dataset)
     return img.shape, label.shape

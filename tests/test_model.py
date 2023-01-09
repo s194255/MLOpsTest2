@@ -4,7 +4,6 @@ import torch
 from src.models.model import Classifier
 
 
-
 def test_model():
     batch_size = 4
 

@@ -4,7 +4,6 @@ import torch
 from src.models.model import Classifier
 
 
-
 def can_calculate_loss(model, criterion, batch_size):
     x = torch.randn((batch_size, 1, 28, 28), dtype=torch.float32)
     labels = torch.randint(10, (batch_size,), dtype=torch.int64)

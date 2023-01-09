@@ -1,14 +1,12 @@
-import torch
 import click
-
-from data import MNIST
-from model import Classifier, Inference
-
-from torch.utils.data import DataLoader
-
-from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
+import torch
+from model import Classifier, Inference
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+
+from data import MNIST
 
 
 class Main:
