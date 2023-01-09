@@ -1,0 +1,3 @@
+defaults:
+    - model_parameters: exp1
+    - training_parameters: exp1
