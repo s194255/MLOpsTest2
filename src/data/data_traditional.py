@@ -7,19 +7,20 @@ from torch.utils.data import Dataset
 
 class MNIST(Dataset):
     def __init__(self, root, task):
-        if task == 'train':
-            self.files = [os.path.join(root, 'train_{}.npz').format(i)
-                          for i in range(5)]
-        if task == 'test':
-            self.files = [os.path.join(root, 'test.npz')]
+        if task == "train":
+            self.files = [
+                os.path.join(root, "train_{}.npz").format(i) for i in range(5)
+            ]
+        if task == "test":
+            self.files = [os.path.join(root, "test.npz")]
         self.X, self.Y = self._load_files(self.files)
 
     def _load_files(self, files):
         X, Y = [], []
         for training_file in files:
             data = np.load(training_file)
-            X.append(data['images'])
-            Y.append(data['labels'])
+            X.append(data["images"])
+            Y.append(data["labels"])
 
         X = np.concatenate(X, axis=0)
         X = torch.tensor(X, dtype=torch.float32)

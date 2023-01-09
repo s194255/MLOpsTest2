@@ -1,20 +1,25 @@
-import argparse
-import sys
-
 import click
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from model import Classifier, Inference
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from data import MNIST
 
 
 class Main:
-
-    def __init__(self, models, dataloaders, optimizer, scheduler, criterion, save_path, weight_path=None):
+    def __init__(
+        self,
+        models,
+        dataloaders,
+        optimizer,
+        scheduler,
+        criterion,
+        save_path,
+        weight_path=None,
+    ):
         self.models = models
         self.dataloaders = dataloaders
         self.optimizer = optimizer
@@ -24,9 +29,9 @@ class Main:
 
         if weight_path:
             checkpoint = torch.load(weight_path)
-            self.models['train'].load_state_dict(checkpoint['model'])
+            self.models["train"].load_state_dict(checkpoint["model"])
 
-        self.task_functions = {'train': self.train_fun, 'test': self.test_fun}
+        self.task_functions = {"train": self.train_fun, "test": self.test_fun}
 
     def train_fun(self, model, dataloader):
         epoch_losses = []
@@ -49,30 +54,30 @@ class Main:
         return epoch_accs
 
     def train(self, n_epochs):
-        tasks = ['train', 'test']
+        tasks = ["train", "test"]
         all_scores = {task: [] for task in tasks}
         for i in tqdm(range(n_epochs)):
             for task in tasks:
-                scores = self.task_functions[task](self.models[task], self.dataloaders[task])
+                scores = self.task_functions[task](
+                    self.models[task], self.dataloaders[task]
+                )
                 all_scores[task].append(scores)
-                if task == 'train':
+                if task == "train":
                     self.scheduler.step()
-        self.plot_loss(np.array(all_scores['train']).flatten())
-        torch.save({'model': self.models['train'].state_dict()}, self.save_path)
+        self.plot_loss(np.array(all_scores["train"]).flatten())
+        torch.save({"model": self.models["train"].state_dict()}, self.save_path)
 
     def test(self):
-        scores = self.task_functions['test'](self.models['test'], self.dataloaders['test'])
+        scores = self.task_functions["test"](
+            self.models["test"], self.dataloaders["test"]
+        )
         print(np.mean(scores))
-
 
     def plot_loss(self, losses):
         plt.plot(losses)
-        plt.xlabel('training iteration')
-        plt.ylabel('loss')
+        plt.xlabel("training iteration")
+        plt.ylabel("loss")
         plt.show()
-
-
-
 
 
 @click.group()
@@ -80,37 +85,40 @@ def cli():
     pass
 
 
-
 @click.command()
 @click.argument("model_checkpoint")
-@click.option("--data_root", default='', help='data root')
+@click.option("--data_root", default="", help="data root")
 def evaluate(model_checkpoint):
     print("Evaluating until hitting the ceiling")
     print(model_checkpoint)
 
-    data_root = 'data/raw'
-    tasks = ['train', 'test']
+    data_root = "data/raw"
+    tasks = ["train", "test"]
     datasets = {task: MNIST(data_root, task) for task in tasks}
-    dataloaders = {task: DataLoader(datasets[task], batch_size=16, num_workers=0) for task in tasks}
+    dataloaders = {
+        task: DataLoader(datasets[task], batch_size=16, num_workers=0) for task in tasks
+    }
     classifier = Classifier()
     inference = Inference(classifier)
-    models = {'train': classifier, 'test': inference}
+    models = {"train": classifier, "test": inference}
 
     optimizer = torch.optim.Adam(classifier.parameters())
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 4)
     criterion = torch.nn.CrossEntropyLoss()
 
-    main = Main(models, dataloaders, optimizer, scheduler, criterion, 'trained_model.pt', weight_path='trained_model.pt')
+    main = Main(
+        models,
+        dataloaders,
+        optimizer,
+        scheduler,
+        criterion,
+        "trained_model.pt",
+        weight_path="trained_model.pt",
+    )
     main.test()
 
 
-cli.add_command(train)
 cli.add_command(evaluate)
 
 if __name__ == "__main__":
     cli()
-
-
-
-
-

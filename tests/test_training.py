@@ -10,12 +10,13 @@ def can_calculate_loss(model, criterion, batch_size):
     preds = model(x)
     try:
         loss = criterion(preds, labels)
-        assert loss.dtype == torch.float32, 'loss did not have torch.float32 as dtype'
+        assert loss.dtype == torch.float32, "loss did not have torch.float32 as dtype"
         return True
-    except:
+    except Exception:
         return False
 
-@pytest.mark.parametrize('batch_size', [1, 2, 4, 8, 16, 32])
+
+@pytest.mark.parametrize("batch_size", [1, 2, 4, 8, 16, 32])
 def test_training(batch_size):
     criterion = torch.nn.CrossEntropyLoss()
     model = Classifier()
