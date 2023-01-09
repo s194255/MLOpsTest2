@@ -1,6 +1,8 @@
-from src.models.model import Classifier
-import torch
 import pytest
+import torch
+
+from src.models.model import Classifier
+
 
 def can_calculate_loss(model, criterion, batch_size):
     x = torch.randn((batch_size, 1, 28, 28), dtype=torch.float32)
