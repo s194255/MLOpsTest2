@@ -20,4 +20,4 @@ jobs:
         python -m pip install isort
     - name: Run isort
       run: |
-        isort . --recursive
+        isort . --check-only
