@@ -1,6 +1,8 @@
-import torch
-from src.models.model import Classifier
 import pytest
+import torch
+
+from src.models.model import Classifier
+
 
 
 def test_model():

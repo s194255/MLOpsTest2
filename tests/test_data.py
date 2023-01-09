@@ -1,10 +1,13 @@
-from src.data.data_traditional import MNIST
-import random
-import torch
 import os
-from torch.utils.data import DataLoader
-from tests import _PATH_DATA
+import random
+
 import pytest
+import torch
+from torch.utils.data import DataLoader
+
+from src.data.data_traditional import MNIST
+from tests import _PATH_DATA
+
 
 
 def get_random_shape(dataset):
