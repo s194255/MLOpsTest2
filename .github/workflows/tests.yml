@@ -28,6 +28,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r requirements_tests.txt
+    - name: Pull data from Google Drive
+      run: |
+        dvc pull -f --remote google --id 15ZgQJO9CcGJN9vV_QPiS65rJNschLNBf
     - name: Test with pytest
       run: |
         pip install pytest
