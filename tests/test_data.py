@@ -10,7 +10,7 @@ from tests import _PATH_DATA
 
 
 def get_random_shape(dataset):
-    img, label = random.choice(dataset)
+    img, label =   random.choice(dataset)
     return img.shape, label.shape
 
 
